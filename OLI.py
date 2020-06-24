@@ -36,7 +36,10 @@ def draw_lines():
         while y2 >= 330:
             y2 = np.random.randint(-300, 300 + 1)
 
-        vertical.append((x, y1, x, y2))
+        if y1 <= y2:
+            vertical.append((x, y1, x, y2))
+        else:
+            vertical.append((x, y2, x, y1))
 
     horizontal = []
     for i in range(5):
@@ -54,9 +57,6 @@ def draw_lines():
             horizontal.append((x1, y, x2, y))
         else:
             horizontal.append((x2, y, x1, y))
-
-        
-        
 
     lst = vertical + horizontal
 
@@ -90,31 +90,35 @@ def orth_line_inter(lst: list):
 
         for x1, y1, x2, y2 in lst:
 
-            if (x1 <= x and x <= x2) or (x1 >= x and x >= x2):
-                AS.append((x1, y1, x2, y2))
+            if (x1 <= x and x <= x2):
+                if (x1, y1, x2, y2) not in AS:
+                    AS.append((x1, y1, x2, y2))
             
             else:
                 if (x1, y1, x2, y2) in AS:
                     AS.remove((x1, y1, x2, y2))
-                
-        for x_1, y_1, x_2, y_2 in AS:
-            for x__1, y__1, x__2, y__2 in AS:
-    
-                # if not the same segments.
-                if (x_1, y_1, x_2, y_2) != (x__1, y__1, x__2, y__2):
 
-                    #check if intersecting segments
-                    if (y_1 >= y__1 and y_2 <= y__2) or (y__1 >= y_1 and y__2 <= y_2):
+        if len(AS) >= 1:
 
-                        boolean, y = calc_intersection(x, x_1, y_1, x_2, y_2, x__1, y__1, x__2, y__2)
+            for x_1, y_1, x_2, y_2 in AS:
+                for x__1, y__1, x__2, y__2 in AS:
+        
+                    # if not the same segments.
+                    if (x_1, y_1, x_2, y_2) != (x__1, y__1, x__2, y__2):
 
-                        if boolean:
-                            bob.penup()
-                            bob.goto(x,y)
-                            bob.dot()
-                            bob.pendown()
+                        #check if intersecting segments
+                        if (y_1 >= y__1 and y_2 <= y__2):
 
-        x += 1
+                            boolean, y = calc_intersection(x, x_1, y_1, x_2, y_2, x__1, y__1, x__2, y__2)
+
+                            if boolean:
+                                bob.penup()
+                                bob.goto(x,y)
+                                bob.dot()
+                                bob.pendown()
+            x += 1
+        else:
+            x += 1
 
 
 

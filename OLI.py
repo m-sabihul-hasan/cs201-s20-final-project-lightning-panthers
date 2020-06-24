@@ -19,12 +19,14 @@ def calc_intersection(x, x_1, y_1, x_2, y_2, x__1, y__1, x__2, y__2):
         else:
             return False, 0
 
+    return False, 0
+
 
 
 def draw_lines():
 
     vertical = []
-    for i in range(5):
+    for i in range(150):
         
         x = np.random.randint(-300, 300 + 1)
 
@@ -42,7 +44,7 @@ def draw_lines():
             vertical.append((x, y2, x, y1))
 
     horizontal = []
-    for i in range(5):
+    for i in range(150):
         x1 = -350
         while x1 <= -330:
             x1 = np.random.randint(-300, 300 + 1)
@@ -116,9 +118,8 @@ def orth_line_inter(lst: list):
                                 bob.goto(x,y)
                                 bob.dot()
                                 bob.pendown()
-            x += 1
-        else:
-            x += 1
+        
+        x += 1
 
 
 

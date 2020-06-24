@@ -136,4 +136,6 @@ lst = draw_lines()
 
 orth_line_inter(lst)
 print('done')
+
+bob.hideturtle()
 turtle.done()

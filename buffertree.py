@@ -200,9 +200,10 @@ class BufferTree:
             for i in range(len(x.child)):
                 self.inorder(x.child[i])
                 if i < len(x.keys):
-                    print(x.keys[i])
+                    print(x.keys[i][0], end=", ")
         else:
-            print(x.keys)
+            for k in x.keys:
+                print(k[0], end=", ")
 
     def bufferempty(self, x):
         if x.child != []:
@@ -242,7 +243,9 @@ class BufferTree:
                 
                 
 
-    def bufferinsert(self, b, x):
+    def bufferinsert(self, b):
+        b = [b]
+        x = self.root
         self.nodeswithbuffer[0] = {x}
         for i in b:
             if len(x.buffer) == 3:
@@ -271,23 +274,12 @@ def main():
     #for i in range(10):
     #    B.insert((i, 2 * i))
 
-    a = [8, 9, 10, 11, 15, 16, 17, 18, 20, 23,24]#, 1, 7, 5, 3, 6, 2, 4, 14, 12, 13]
+    a = [8, 9, 10, 11, 15, 16, 17, 18, 20, 23,24, 1, 7, 5, 3, 6, 2, 4, 14, 12, 13]
     for i in a:
-        #B.insert((i,))
-        B.bufferinsert([(i, "i")],B.root)
-        #print(B.root.buffer, B.root.child)
-        #print(B.nodeswithbuffer)
-    #B.bufferinsert([(1, "i"), (2, "i"), (11, "i"), (4, "i")], B.root)
-    #print(B.root.buffer)
-    B.emptyallbuffers()
-    #print(B.nodeswithbuffer)
-    #B.insert((8,))
-    #B.insert((9,))
-    #B.delete(B.root, (8,))
-    B.print_tree(B.root)
-    B.inorder(B.root)
-    #B.delete(B.root, (15,))
-    #print("\n")
+        B.bufferinsert((i, "i"))
+
+    #B.emptyallbuffers()
     #B.print_tree(B.root)
+    B.inorder(B.root)
 
 main()

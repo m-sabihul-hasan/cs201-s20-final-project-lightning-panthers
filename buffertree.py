@@ -92,7 +92,7 @@ class BufferTree:
                     self.delete_sibling(x, i, i - 1)
                 else:
                     self.delete_merge(x, i, i - 1)
-            self.delete(x.child[i], k)
+            self.delete(x.child[i-1], k)
 
     # Delete internal node
     def delete_internal_node(self, x, k, i):
@@ -116,7 +116,7 @@ class BufferTree:
     # Delete the predecessor
     def delete_predecessor(self, x):
         if x.leaf:
-            return x.pop()
+            return x.keys.pop()
         n = len(x.keys) - 1
         if len(x.child[n].keys) >= self.t:
             self.delete_sibling(x, n + 1, n)
@@ -195,15 +195,15 @@ class BufferTree:
             for i in x.child:
                 self.print_tree(i, l)
     
-    def inorder(self,x):
+    def inorder(self,x, topr):
         if not x.leaf:
             for i in range(len(x.child)):
-                self.inorder(x.child[i])
+                self.inorder(x.child[i], topr)
                 if i < len(x.keys):
-                    print(x.keys[i][0], end=", ")
+                    topr.append(x.keys[i][0])#, end=", ")
         else:
             for k in x.keys:
-                print(k[0], end=", ")
+                topr.append(k[0])#, end=", ")
 
     def bufferempty(self, x):
         if x.child != []:
@@ -267,6 +267,16 @@ class BufferTree:
                     return False
         return True
 
+    def search(self, b, x):
+        if (b,) in x.keys or (b,"i") in x.buffer or (b,"d") in x.buffer:
+                return True
+        if x.child != []:
+            for i in range(len(x.keys)):
+                if b < x.keys[i][0]:
+                    return self.search(b, x.child[i])
+                elif i == len(x.keys) - 1:
+                    return self.search(b, x.child[i+1])
+        return False
 
 def main():
     B = BufferTree(2)
@@ -278,8 +288,11 @@ def main():
     for i in a:
         B.bufferinsert((i, "i"))
 
-    #B.emptyallbuffers()
+    #print(B.search(4.5,B.root))
+    B.emptyallbuffers()
     #B.print_tree(B.root)
-    B.inorder(B.root)
+    topr = []
+    B.inorder(B.root, topr)
+    print(topr)
 
-main()
+#main()
